@@ -17,7 +17,7 @@
 <%!private TransportEntity responseEntity;
     private Integer clientId;
 
-    private String viewAsRows() {
+    private String viewAsRows(HttpSession session) {
         StringBuilder rowBuilder = new StringBuilder();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Collection<Service> serviceCollection = (Collection<Service>) responseEntity.getResponseProviderEntities();
@@ -35,13 +35,11 @@
                         .append("    </tr>\n");
                 unusedServiceTypes.remove(nextService.getType());
             }
-
+            session.setAttribute("unusedTypes", unusedServiceTypes);
             for(ServiceType serviceType:unusedServiceTypes) {
                 rowBuilder.append("    <tr>\n")
                         .append("        <td>").append(serviceType.toString()).append("</td>\n")
-                        .append("        <td colspan=\"4\"><form class=tableform action=../service/new.jsp method=post>\n")
-                        .append("           <button class=inputform type=submit name=addServiceButton value=").append(clientId).append(">Add</button>")
-                        .append("         </form>").append("</td>\n")
+                        .append("        <td colspan=\"4\">")
                         .append("    </tr>\n");
             }
         } else {
@@ -55,10 +53,10 @@
     clientId = Integer.parseInt(request.getParameter("clientButton"));
     request.setAttribute("command", "getclient");
     request.setAttribute("requestObject", clientId);
-    request.getRequestDispatcher("/client/util.jsp").include(request, response);
+    request.getRequestDispatcher("/transport/util.jsp").include(request, response);
     Client client = (Client) ((TransportEntity) request.getSession().getAttribute("responseEntity")).getResponseProviderEntities().toArray()[0];
     request.setAttribute("command", "clientservices");
-    request.getRequestDispatcher("/client/util.jsp").include(request, response);
+    request.getRequestDispatcher("/transport/util.jsp").include(request, response);
     responseEntity = (TransportEntity) request.getSession().getAttribute("responseEntity");
 %>
 
@@ -69,7 +67,7 @@
 </head>
 <body class="stpage">
 <h1 class="stpage">Services of <%=client.getName()%> table</h1>
-<p>client info: <%=client.getInfo()%></p>
+<p>Client info: <%=client.getInfo()%></p>
 <table>
     <tr>
         <th>Type</th>
@@ -79,8 +77,11 @@
         <th>Action</th>
     </tr>
     <%
-        out.print(viewAsRows());
+        out.print(viewAsRows(session));
     %>
 </table>
+<form class=tableform action=../service/new.jsp method=post>
+    <button class=inputform type=submit name=addServiceButton value=<%=clientId%>>Add</button>
+</form>
 </body>
 </html>

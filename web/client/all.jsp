@@ -19,7 +19,7 @@
         if(clientsCollection != null && !clientsCollection.isEmpty()) {
             for (Client nextClient : clientsCollection) {
                 rowBuilder.append("    <tr>\n        <td>").append(nextClient.getName()).append("</td>\n")
-                        .append("        <td><form class=tableform action=services.jsp method=post>\n")
+                        .append("        <td><form class=tableform action=../client/services.jsp method=post>\n")
                         .append("           <button class=inputform type=submit name=clientButton value=").append(nextClient.getId()).append("> View services </button>")
                         .append("         </form>").append("</td>\n")
                         .append("    </tr>\n");
@@ -32,8 +32,8 @@
 %>
 <%
     request.setAttribute("command", "allclients");
-    request.getRequestDispatcher("/client/util.jsp").include(request, response);
-    responseEntity = (TransportEntity) request.getSession(true).getAttribute("responseEntity");
+    request.getRequestDispatcher("/transport/util.jsp").include(request, response);
+    responseEntity = (TransportEntity) request.getSession().getAttribute("responseEntity");
 %>
 <html>
 <head>

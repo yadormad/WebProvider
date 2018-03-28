@@ -16,7 +16,7 @@ public enum PessimisticBlockEnum {
     }
 
     public synchronized boolean checkPermission(int entityId, String userId) {
-
+        System.out.println("Check block for " + userId);
         if (userBlockMapping.get(userId).containsKey(entityId)) {
             return true;
         }

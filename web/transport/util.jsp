@@ -1,6 +1,7 @@
 <%@ page import="entity.transport.TransportEntity" %>
 <%@ page import="server.admin.ServerCommunicator" %>
-<%@ page import="java.io.Serializable" %><%--
+<%@ page import="java.io.Serializable" %>
+<%@page errorPage="../error_page.jsp" %><%--
   Created by IntelliJ IDEA.
   User: Oleg
   Date: 27.03.2018
@@ -12,6 +13,7 @@
 <%
     TransportEntity requestEntity = new TransportEntity();
     requestEntity.setCommand(String.valueOf(request.getAttribute("command")));
+    requestEntity.setMessage(String.valueOf(request.getAttribute("message")));
     requestEntity.setRequsetObject((Serializable) request.getAttribute("requestObject"));
     TransportEntity responseEntity = ServerCommunicator.perform(session.getId(), requestEntity);
     request.getSession(true).setAttribute("responseEntity", responseEntity);

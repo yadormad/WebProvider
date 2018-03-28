@@ -26,7 +26,8 @@ public class UserHandler implements Callable<TransportEntity>{
     public TransportEntity call() throws WrongServiceTypeException, DbAccessException, DateFormatException{
         String command = request.getCommand();
         TransportEntity response = UserCommands.valueOf(command.toUpperCase()).perform(request, userId);
-        System.out.println(response.getResponseProviderEntities().size());
+        if(response.getResponseProviderEntities() != null)
+            System.out.println(response.getResponseProviderEntities().size());
         return response;
     }
 
