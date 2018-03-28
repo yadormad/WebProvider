@@ -2,7 +2,6 @@
 <%@ page import="entity.transport.TransportEntity" %>
 <%@ page import="entity.impl.ServiceType" %>
 <%@ page import="entity.impl.Service" %>
-<%@ page import="entity.ProviderEntity" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="entity.impl.Client" %>
 <%@ page import="java.util.*" %><%--
@@ -15,7 +14,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%!private TransportEntity responseEntity;
-    private Integer clientId;
 
     private String viewAsRows(HttpSession session) {
         StringBuilder rowBuilder = new StringBuilder();
@@ -31,26 +29,35 @@
                         .append("        <td>").append(dateFormat.format(nextService.getServiceDisablingDate())).append("</td>\n")
                         .append("        <td><form class=tableform action=../service/update.jsp method=post>\n")
                         .append("           <button class=inputform type=submit name=updateServiceButton value=").append(nextService.getId()).append(">Update</button>")
+                        .append("         </form>").append("\n")
+                        .append("        <form class=tableform action=../client/service.jsp method=post>\n")
+                        .append("           <button class=inputform type=submit name=deleteServiceButton value=").append(nextService.getId()).append(">Delete</button>")
                         .append("         </form>").append("</td>\n")
                         .append("    </tr>\n");
                 unusedServiceTypes.remove(nextService.getType());
             }
-            session.setAttribute("unusedTypes", unusedServiceTypes);
-            for(ServiceType serviceType:unusedServiceTypes) {
-                rowBuilder.append("    <tr>\n")
-                        .append("        <td>").append(serviceType.toString()).append("</td>\n")
-                        .append("        <td colspan=\"4\">")
-                        .append("    </tr>\n");
-            }
         } else {
             rowBuilder.append(responseEntity.getMessage());
+        }
+        session.setAttribute("unusedTypes", unusedServiceTypes);
+        for(ServiceType serviceType:unusedServiceTypes) {
+            rowBuilder.append("    <tr>\n")
+                    .append("        <td>").append(serviceType.toString()).append("</td>\n")
+                    .append("        <td colspan=\"4\">")
+                    .append("    </tr>\n");
         }
         return rowBuilder.toString();
     }
 %>
 
 <%
-    clientId = Integer.parseInt(request.getParameter("clientButton"));
+    if(request.getParameter("deleteServiceButton")!=null) {
+        request.setAttribute("command", "delete");
+        request.setAttribute("command", "service");
+        request.setAttribute("requestObject", Integer.parseInt(request.getParameter("deleteServiceButton")));
+        request.getRequestDispatcher("/transport/util.jsp").include(request, response);
+    }
+    Integer clientId = Integer.parseInt(request.getParameter("clientButton"));
     request.setAttribute("command", "getclient");
     request.setAttribute("requestObject", clientId);
     request.getRequestDispatcher("/transport/util.jsp").include(request, response);
@@ -62,11 +69,11 @@
 
 <html>
 <head>
-    <title>Services of <%=client.getName()%></title>
+    <title><%=client.getName()%>'s services</title>
     <link rel="stylesheet" type="text/css" href="../styles/mystyle1.css"/>
 </head>
 <body class="stpage">
-<h1 class="stpage">Services of <%=client.getName()%> table</h1>
+<h1 class="stpage"><%=client.getName()%>'s services</h1>
 <p>Client info: <%=client.getInfo()%></p>
 <table>
     <tr>
@@ -81,7 +88,8 @@
     %>
 </table>
 <form class=tableform action=../service/new.jsp method=post>
-    <button class=inputform type=submit name=addServiceButton value=<%=clientId%>>Add</button>
+    <button class=inputform type=submit name=addServiceButton value=<%=clientId%>>Add service</button>
 </form>
+<button class=inputform onclick='history.back()'>Back</button>
 </body>
 </html>

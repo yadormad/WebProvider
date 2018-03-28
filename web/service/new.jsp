@@ -17,14 +17,18 @@
 <%!
     private Client client;
 
-    private String typesRadio(HttpServletRequest request) {
+    private String typesRadio(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Collection<ServiceType>unusedServiceTypes = (Collection<ServiceType>) request.getSession().getAttribute("unusedTypes");
+        if(unusedServiceTypes.isEmpty()) {
+            request.setAttribute("error", "No service type available");
+            request.getRequestDispatcher("/client/all.jsp").include(request, response);
+        }
         StringBuilder typesRadioString = new StringBuilder();
         typesRadioString.append("        <label for=serviceType class = inputform>Service type:</label>");
         for (ServiceType serviceType:unusedServiceTypes) {
             typesRadioString.append("        <input type=radio id=serviceType name=serviceType value=").append(serviceType.toString()).append(">").append(serviceType.toString()).append("</br>");
         }
-        typesRadioString.insert(typesRadioString.indexOf(">")-1, "checked");
+        typesRadioString.insert(typesRadioString.indexOf(">"), "checked");
         return String.valueOf(typesRadioString);
     }
 
@@ -84,7 +88,7 @@
 <p>Client info: <%=client.getInfo()%></p>
 <form class="inputform" action="new.jsp" method=post>
     <div style="display: inline-block">
-        <%=typesRadio(request)%>
+        <%=typesRadio(request, response)%>
     </div>
     <div style="display: inline-block">
         <label for=name class = inputform>Service name</label>
