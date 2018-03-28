@@ -1,0 +1,189 @@
+.stpage{
+    background: rgb(79,79,79);
+}
+p{
+    font-family: Times, serif;
+    font-size: 30px;
+    font-weight: bold;
+    color: lightgrey;
+    text-align: center
+}
+
+p.error{
+    font-family: Times, serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgba(227, 28, 0, 0.93);
+    text-align: left;
+}
+
+h1.stpage{
+    font-family: Times, serif;
+    font-size: 40px;
+    font-weight: bold;
+    color: lightgrey;
+    top: 10px;
+    left: 10px;
+    text-align: center
+}
+a.stpage{
+    font-family: Times, serif;
+    font-size: 16px;
+    color: lightgrey;
+}
+a.stpage:hover {
+    color: whitesmoke;
+}
+a.stpage:active {
+    color: white;
+}
+.inputform{
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+form.inputform{
+    margin: 0 auto;
+    width: 480px;
+}
+
+form.tableform{
+    margin: 0 auto;
+    width: 150px;
+}
+
+label.inputform {
+    font-family: Times, serif;
+    font-size: 16px;
+    color: lightgrey;
+    display: block;
+    float: none;
+}
+label.inputform:after { content: ": " }
+
+input.inputform{
+    color: black;
+    background: lightgrey;
+    padding: 12px 20px;
+    width: 200px;
+    margin: 8px 0;
+}
+
+input.begininputform{
+    color: grey;
+    background: lightgrey;
+    padding: 12px 20px;
+    width: 200px;
+    margin: 8px 0;
+}
+
+button.inputform{
+    display: inline-block;
+    color: rgb(79,79,79);
+    font-weight: 700;
+    text-decoration: none;
+    user-select: none;
+    padding: 14px 20px;
+    outline: none;
+    border: 2px solid;
+    border-radius: 1px;
+    transition: 0.2s;
+}
+
+button.inputform:hover { background: rgba(255,255,255,.2); }
+button.inputform:active { background: white; }
+
+
+
+table{
+    margin-left: auto;
+    margin-right: auto;
+    background-color: whitesmoke;
+    border-collapse: collapse;
+}
+table, tr, th, td {
+    border: 2px solid;
+    border-color: lightgrey;
+}
+tr, th, td{
+    padding: 10px 10px;
+    font-family: Times, serif;
+    font-size: 16px;
+    color: rgb(79,79,79);
+}
+
+a{
+    font-family: Times, serif;
+    font-size: 16px;
+    color: rgb(79,79,79);
+}
+a:hover {
+    color: black;
+}
+a:active {
+    color: darkgray;
+}
+
+div.modal {
+    position: fixed;
+    top: 50%;
+    left: 45%;
+    z-index: -1;
+    background-color: whitesmoke;
+    border: 3px solid;
+    border-color: darkgray;
+    width: 10%;
+    height: 85px;
+    opacity: 0.0;
+    transition: 0.2s;
+}
+p.modal {
+    font-family: Times, serif;
+    font-size: 16px;
+    color: dimgrey;
+    text-align: center;
+}
+button.modaldelete {
+    display: inline-block;
+    font-family: Times, serif;
+    float: left;
+    margin-left: 5px;
+    font-size: 16px;
+    color: rgb(79,79,79);
+    font-weight: 700;
+    text-decoration: none;
+    user-select: none;
+    padding: 4px;
+    outline: none;
+    border: 2px solid;
+    border-radius: 1px;
+    transition: 0.2s;
+}
+
+button.modaldelete:hover { background: rgba(255,255,255,.2); }
+button.modaldelete:active { background: white; }
+button.modalcancel {
+    display: inline-block;
+    font-family: Times, serif;
+    float:right;
+    margin-right: 5px;
+    font-size: 16px;
+    color: rgb(79,79,79);
+    font-weight: 700;
+    text-decoration: none;
+    user-select: none;
+    padding: 4px;
+    outline: none;
+    border: 2px solid;
+    border-radius: 1px;
+    transition: 0.2s;
+}
+
+button.modalcancel:hover { background: rgba(255,255,255,.2); }
+button.modalcancel:active { background: white; }
+
+div.opend {
+    z-index: 100;
+    opacity: 1.0;
+    transition: 0.2s;
+}
