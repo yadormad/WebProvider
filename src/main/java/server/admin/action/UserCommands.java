@@ -13,6 +13,7 @@ public enum UserCommands {
     ALLSERVICES(new AllServicesAction()),
     CHECKID(new CheckIdAction()),
     GETCLIENT(new GetClientAction()),
+    GETSERVICE(new GetServiceAction()),
     CLIENTSERVICES(new ClientServicesAction()),
     DELETE(new DeleteEntityAction()),
     UPDSERVICE(new UpdateServiceAction()),
