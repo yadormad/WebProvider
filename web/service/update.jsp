@@ -1,9 +1,4 @@
-<%@ page import="entity.impl.Client" %>
-<%@ page import="entity.transport.TransportEntity" %>
-<%@ page import="entity.impl.Service" %>
-<%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.text.ParseException" %>
-<%@ page import="java.io.IOException" %>
+
 <%@ page errorPage="../error_page.jsp" %> <%--
   Created by IntelliJ IDEA.
   User: Oleg
@@ -12,44 +7,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%!
-    private int serviceId;
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
-    private void updateService(HttpServletRequest request, HttpServletResponse response) throws ServletException, ParseException, IOException {
-        Service service = new Service();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        service.setId(serviceId);
-        service.setName(request.getParameter("name"));
-        service.setServiceProvisionDate(dateFormat.parse(request.getParameter("provisionDate")));
-        service.setServiceDisablingDate(dateFormat.parse(request.getParameter("disablingDate")));
-        request.setAttribute("command", "updservice");
-        request.setAttribute("requestObject", service);
-        request.getRequestDispatcher("/transport/util.jsp").include(request, response);
-        String message = ((TransportEntity) request.getSession().getAttribute("responseEntity")).getMessage();
-        if(message.startsWith("Error")) {
-            request.setAttribute("error", message);
-            request.getRequestDispatcher("/client/all.jsp").forward(request, response);
-        }
-    }
-%>
-<%
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    if(request.getParameter("updateServiceButton") != null) {
-        serviceId = Integer.parseInt(request.getParameter("updateServiceButton"));
-    }
-    if(request.getParameter("updButton") != null) {
-        updateService(request, response);
-    }
-    request.setAttribute("command", "getservice");
-    request.setAttribute("requestObject", serviceId);
-    request.getRequestDispatcher("/transport/util.jsp").include(request, response);
-    Service service = (Service) ((TransportEntity) request.getSession().getAttribute("responseEntity")).getResponseProviderEntities().toArray()[0];
-    int clientId = service.getClientId();
-    request.setAttribute("command", "getclient");
-    request.setAttribute("requestObject", clientId);
-    request.getRequestDispatcher("/transport/util.jsp").include(request, response);
-    Client client = (Client) ((TransportEntity) request.getSession().getAttribute("responseEntity")).getResponseProviderEntities().toArray()[0];
-%>
+<%! private int serviceId; %>
+
+<%@include file="controller/submitupdate.jsp"%>
+<%@include file="controller/viewupdate.jsp"%>
+
 <html>
 <head>
     <title>Update <%=client.getName()%>'s service</title>
@@ -70,8 +34,20 @@
         <label for=disablingDate class = inputform>Disabling date</label>
         <input type=date id=disablingDate name=disablingDate required=required class = inputform value=<%=dateFormat.format(service.getServiceDisablingDate())%>>
     </div>
-    <button name=updButton type=submit class=inputform value="submitted"> Update</button>
+    <c:choose>
+        <c:when test="${requestScope.get('blocked') != null}">
+            <p class=error><%=request.getAttribute("blocked")%></p>
+        </c:when>
+        <c:otherwise>
+            <button name=updButton type=submit class=inputform value=<%=serviceId%>> Update</button>
+        </c:otherwise>
+    </c:choose>
 </form>
+<c:choose>
+    <c:when test="${requestScope.get('error') != null}">
+        <p class=error><%=request.getAttribute("error")%></p>
+    </c:when>
+</c:choose>
 <button class=inputform onclick='history.back()'>Back</button>
 </body>
 </html>

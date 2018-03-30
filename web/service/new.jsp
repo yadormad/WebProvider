@@ -13,13 +13,12 @@
 <%!
     private Client client;
 %>
-<%@include file="viewnew.jsp"%>
-<%@include file="submitnew.jsp"%>
+<%@include file="controller/viewnew.jsp"%>
+<%@include file="controller/submitnew.jsp"%>
 <%
+    checkId(request, response);
     if(request.getParameter("addButton") != null) {
         addService(request, response);
-    } else {
-        checkId(request, response);
     }
 %>
 

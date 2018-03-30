@@ -7,7 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="submitnew.jsp"%>
+<%@include file="controller/submitnew.jsp"%>
 <c:if test="${requestScope.get('responseEntity') != null}">
     <c:redirect url="all.jsp"/>
 </c:if>
