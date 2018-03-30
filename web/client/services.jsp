@@ -27,10 +27,10 @@
         <th>Action</th>
     </tr>
     <%
-        out.print(viewAsRows(request));
+        out.print(viewAsRows(session));
     %>
 </table>
-<c:if test="${!requestScope.get('unusedTypes').isEmpty()}">
+<c:if test="${!sessionScope.get('unusedTypes').isEmpty()}">
     <form class=tableform action=../service/new.jsp method=post>
         <button class=inputform type=submit name=addServiceButton value=<%=clientId%>>Add service</button>
     </form>

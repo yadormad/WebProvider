@@ -14,7 +14,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%!private TransportEntity responseEntity;
 
-    private String viewAsRows(HttpServletRequest request) {
+    private String viewAsRows(HttpSession session) {
         StringBuilder rowBuilder = new StringBuilder();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Collection<Service> serviceCollection = (Collection<Service>) responseEntity.getResponseProviderEntities();
@@ -38,7 +38,7 @@
         } else {
             rowBuilder.append(responseEntity.getMessage());
         }
-        request.setAttribute("unusedTypes", unusedServiceTypes);
+        session.setAttribute("unusedTypes", unusedServiceTypes);
         for(ServiceType serviceType:unusedServiceTypes) {
             rowBuilder.append("    <tr>\n")
                     .append("        <td>").append(serviceType.toString()).append("</td>\n")
