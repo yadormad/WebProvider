@@ -21,7 +21,6 @@ public enum PessimisticBlockEnum {
             return true;
         }
         Set<String> userIdKeySet = userBlockMapping.keySet();
-        Collection<HashMap<Integer, PessimisticBlock>> allBlocks = userBlockMapping.values();
         for (String userIdFromKeySet:userIdKeySet) {
             Map<Integer, PessimisticBlock> userBlocks = userBlockMapping.get(userIdFromKeySet);
             Set<Integer> entityIdKeySet = userBlocks.keySet();
