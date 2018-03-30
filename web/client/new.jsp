@@ -1,4 +1,5 @@
-<%@ page import="entity.impl.Client" %><%--
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%--
   Created by IntelliJ IDEA.
   User: Oleg
   Date: 28.03.2018
@@ -6,17 +7,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<%
-    if(request.getParameter("addButton") != null && request.getParameter("addButton").equals("submitted")) {
-        Client client = new Client(request.getParameter("name"), request.getParameter("info"));
-        request.setAttribute("command", "addclient");
-        request.setAttribute("requestObject", client);
-        request.getRequestDispatcher("/transport/util.jsp").include(request, response);
-        request.getRequestDispatcher("/client/all.jsp").forward(request, response);
-    }
-%>
-
+<%@include file="submitnew.jsp"%>
+<c:if test="${requestScope.get('responseEntity') != null}">
+    <c:redirect url="all.jsp"/>
+</c:if>
 <html>
 <head>
     <title>Add client</title>
