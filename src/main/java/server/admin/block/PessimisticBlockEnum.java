@@ -20,15 +20,17 @@ public enum PessimisticBlockEnum {
         if (userBlockMapping.get(userId).containsKey(entityId)) {
             return true;
         }
+        Set<String> userIdKeySet = userBlockMapping.keySet();
         Collection<HashMap<Integer, PessimisticBlock>> allBlocks = userBlockMapping.values();
-        for (HashMap<Integer, PessimisticBlock> userBlocks:allBlocks) {
-            Set<Integer> userBlocksIdSet = new HashSet<>(userBlocks.keySet());
-            for(Integer blockedEntityId:userBlocksIdSet) {
-                if(userBlocks.get(entityId).isBlocked()) {
+        for (String userIdFromKeySet:userIdKeySet) {
+            Map<Integer, PessimisticBlock> userBlocks = userBlockMapping.get(userIdFromKeySet);
+            Set<Integer> entityIdKeySet = userBlocks.keySet();
+            for (Integer entityIdFromKeySet:entityIdKeySet) {
+                if(userBlocks.get(entityId) != null && userBlocks.get(entityId).isBlocked()) {
                     return false;
                 }
-                if (!userBlocks.get(blockedEntityId).isBlocked()) {
-                    userBlocks.remove(blockedEntityId);
+                if (!userBlocks.get(entityIdFromKeySet).isBlocked()) {
+                   removeBlock(userIdFromKeySet, entityIdFromKeySet);
                 }
             }
         }
@@ -49,6 +51,7 @@ public enum PessimisticBlockEnum {
 
     public void removeBlock(String userId, int entityId) {
         userBlockMapping.get(userId).remove(entityId);
+
     }
 
     public void addUser(String userId) {
