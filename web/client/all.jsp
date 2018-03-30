@@ -1,4 +1,4 @@
-<%@ page errorPage="/error_page.jsp" %><%--
+<%@ page errorPage="../error_page.jsp" %><%--
   Created by IntelliJ IDEA.
   User: Oleg
   Date: 23.03.2018

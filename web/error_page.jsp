@@ -7,7 +7,8 @@
 </head>
 <body class = stpage>
 <p class="error">An error occured</p>
-<p class="error"><%exception.printStackTrace(response.getWriter());%></p>
+<%exception.printStackTrace(System.out);%>
+<p class="error"><%=exception.getMessage()%></p>
 <a class="stpage" href="index.jsp">Back</a>
 </body>
 </html>

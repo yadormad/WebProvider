@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page errorPage="../error_page.jsp" %>
 <%--
   Created by IntelliJ IDEA.
   User: Oleg
@@ -8,6 +9,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="controller/submitnew.jsp"%>
+
 <c:if test="${requestScope.get('responseEntity') != null}">
     <c:redirect url="all.jsp"/>
 </c:if>

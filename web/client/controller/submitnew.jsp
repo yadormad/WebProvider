@@ -1,4 +1,5 @@
 <%@ page import="entity.impl.Client" %>
+<%@ page errorPage="../../error_page.jsp" %>
 <%--
   Created by IntelliJ IDEA.
   User: Oleg

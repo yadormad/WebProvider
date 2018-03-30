@@ -3,6 +3,7 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.text.ParseException" %>
 <%@ page import="java.io.IOException" %>
+<%@ page errorPage="../../error_page.jsp" %>
 <%--
   Created by IntelliJ IDEA.
   User: Oleg

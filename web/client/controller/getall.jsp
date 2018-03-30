@@ -1,6 +1,8 @@
 <%@ page import="entity.transport.TransportEntity" %>
 <%@ page import="entity.impl.Client" %>
-<%@ page import="java.util.Collection" %><%--
+<%@ page import="java.util.Collection" %>
+<%@ page errorPage="../../error_page.jsp" %>
+<%--
   Created by IntelliJ IDEA.
   User: Oleg
   Date: 30.03.2018
