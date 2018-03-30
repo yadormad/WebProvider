@@ -16,5 +16,5 @@
     requestEntity.setMessage(String.valueOf(request.getAttribute("message")));
     requestEntity.setRequsetObject((Serializable) request.getAttribute("requestObject"));
     TransportEntity responseEntity = ServerCommunicator.perform(session.getId(), requestEntity);
-    request.getSession(true).setAttribute("responseEntity", responseEntity);
+    request.setAttribute("responseEntity", responseEntity);
 %>
