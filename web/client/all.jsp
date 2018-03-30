@@ -33,12 +33,5 @@
         <c:out value="${requestScope.get('error')}"/>
     </p>
 </c:if>
-<p class=error>
-    <%--<%
-        if(request.getAttribute("error") != null) {
-            out.print(request.getAttribute("error"));
-        }
-    %>--%>
-</p>
 </body>
 </html>
