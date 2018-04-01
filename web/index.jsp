@@ -17,7 +17,7 @@
 <body class = stpage>
 <h1 class = stpage>Service Provider</h1>
 <c:if test="${param.login != null && param.pass != null}">
-  <%@include file="auth.jsp"%>
+  <jsp:include page="auth.jsp"/>
 </c:if>
 
 <form class="inputform" action="index.jsp" method=post>

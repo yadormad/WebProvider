@@ -5,10 +5,16 @@ import java.util.Date;
 public class PessimisticBlock {
     private int blockedEntityId; // id заблокированной сущности
     private long unblockTime; //время блокировки
+    private boolean isPrepared;
 
-    public PessimisticBlock(int blockedEntityId, long blockTimeout) {
+    public PessimisticBlock(int blockedEntityId, long blockTimeout, boolean isPrepared) {
+        this.isPrepared = isPrepared;
         unblockTime = new Date().getTime() + blockTimeout;
         this.blockedEntityId = blockedEntityId;
+    }
+
+    public boolean isPrepared() {
+        return isPrepared;
     }
 
     public boolean isBlocked(){

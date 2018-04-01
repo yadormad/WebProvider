@@ -15,8 +15,8 @@ public class AddServiceAction implements Action {
         TransportEntity response = new TransportEntity();
         Service newService = (Service) request.getRequsetObject();
         if (PessimisticBlockEnum.ADD_SERVICE_TO_CLIENT_BLOCK.checkPermission(newService.getClientId(), userId)) {
-            PessimisticBlockEnum.DELETE_CLIENT_BLOCK.addBlock(userId, newService.getClientId(), ServerProperties.getInstance().getThreadPerformBlock());
-            PessimisticBlockEnum.ADD_SERVICE_TO_CLIENT_BLOCK.addBlock(userId, newService.getClientId(), ServerProperties.getInstance().getThreadPerformBlock());
+            PessimisticBlockEnum.DELETE_CLIENT_BLOCK.addBlock(userId, newService.getClientId(), ServerProperties.getInstance().getThreadPerformBlock(), false);
+            PessimisticBlockEnum.ADD_SERVICE_TO_CLIENT_BLOCK.addBlock(userId, newService.getClientId(), ServerProperties.getInstance().getThreadPerformBlock(), false);
             SingletonControllerFactory.getControllerFactory().getController(userId).addService(newService);
             response.setMessage("Service added");
         } else {

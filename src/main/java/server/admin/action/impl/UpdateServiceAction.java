@@ -18,8 +18,8 @@ public class UpdateServiceAction implements Action {
         int serviceId = currentlyUpdatedService.getId();
         Controller controller = SingletonControllerFactory.getControllerFactory().getController(userId);
         if (PessimisticBlockEnum.DELETE_AND_UPDATE_SERVICE_BLOCK.checkPermission(serviceId, userId)) {
-            PessimisticBlockEnum.DELETE_CLIENT_BLOCK.addBlock(userId, controller.getServiceClientId(serviceId), ServerProperties.getInstance().getThreadPerformBlock());
-            PessimisticBlockEnum.DELETE_AND_UPDATE_SERVICE_BLOCK.addBlock(userId, serviceId, ServerProperties.getInstance().getThreadPerformBlock());
+            PessimisticBlockEnum.DELETE_CLIENT_BLOCK.addBlock(userId, controller.getServiceClientId(serviceId), ServerProperties.getInstance().getThreadPerformBlock(), false);
+            PessimisticBlockEnum.DELETE_AND_UPDATE_SERVICE_BLOCK.addBlock(userId, serviceId, ServerProperties.getInstance().getThreadPerformBlock(), false);
             SingletonControllerFactory.getControllerFactory().getController(userId).updateService(currentlyUpdatedService);
             response.setMessage("Service updated");
         } else {

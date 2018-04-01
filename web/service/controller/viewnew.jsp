@@ -29,7 +29,7 @@
     }
 
     private void checkId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int clientId = Integer.parseInt(request.getParameter("addServiceButton"));
+        Integer clientId = (Integer) request.getSession().getAttribute("clientId");
         request.setAttribute("command", "getclient");
         request.setAttribute("requestObject", clientId);
         request.getRequestDispatcher("/transport/util.jsp").include(request, response);

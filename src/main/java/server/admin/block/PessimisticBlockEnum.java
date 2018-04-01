@@ -17,16 +17,17 @@ public enum PessimisticBlockEnum {
 
     public synchronized boolean checkPermission(int entityId, String userId) {
         System.out.println("Check block for " + userId);
-        if (userBlockMapping.get(userId).containsKey(entityId)) {
+        /*if (userBlockMapping.get(userId).containsKey(entityId)) {
             return true;
-        }
+        }*/
         Set<String> userIdKeySet = userBlockMapping.keySet();
         for (String userIdFromKeySet:userIdKeySet) {
             Map<Integer, PessimisticBlock> userBlocks = userBlockMapping.get(userIdFromKeySet);
             Set<Integer> entityIdKeySet = userBlocks.keySet();
             for (Integer entityIdFromKeySet:entityIdKeySet) {
                 if(userBlocks.get(entityId) != null && userBlocks.get(entityId).isBlocked()) {
-                    return false;
+                    if (userIdFromKeySet.equals(userId) && !userBlocks.get(entityId).isPrepared())
+                        return false;
                 }
                 if (!userBlocks.get(entityIdFromKeySet).isBlocked()) {
                    removeBlock(userIdFromKeySet, entityIdFromKeySet);
@@ -36,8 +37,8 @@ public enum PessimisticBlockEnum {
         return true;
     }
 
-    public void addBlock(String userId, int entityId, long timeOut) {
-        userBlockMapping.get(userId).put(entityId, new PessimisticBlock(entityId, timeOut));
+    public void addBlock(String userId, int entityId, long timeOut, boolean isPrepared) {
+        userBlockMapping.get(userId).put(entityId, new PessimisticBlock(entityId, timeOut, isPrepared));
     }
 
     public void clearBlocks(String userId) {

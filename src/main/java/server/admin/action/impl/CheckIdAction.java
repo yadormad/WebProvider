@@ -22,8 +22,8 @@ public class CheckIdAction implements Action{
                 response.setMessage("Error: no client with this id");
                 if(controller.containsClient(entityId)) {
                     if (PessimisticBlockEnum.ADD_SERVICE_TO_CLIENT_BLOCK.checkPermission(entityId, userId)) {
-                        PessimisticBlockEnum.DELETE_CLIENT_BLOCK.addBlock(userId, entityId, ServerProperties.getInstance().getThreadWaitingBlock());
-                        PessimisticBlockEnum.ADD_SERVICE_TO_CLIENT_BLOCK.addBlock(userId, entityId, ServerProperties.getInstance().getThreadWaitingBlock());
+                        PessimisticBlockEnum.DELETE_CLIENT_BLOCK.addBlock(userId, entityId, ServerProperties.getInstance().getThreadWaitingBlock(), false);
+                        PessimisticBlockEnum.ADD_SERVICE_TO_CLIENT_BLOCK.addBlock(userId, entityId, ServerProperties.getInstance().getThreadWaitingBlock(), true);
                         response.setMessage("true");
                     } else {
                         response.setMessage("Error: Command blocked");
@@ -34,8 +34,8 @@ public class CheckIdAction implements Action{
                 response.setMessage("Error: no service with this id");
                 if(controller.containsService(entityId)) {
                     if (PessimisticBlockEnum.DELETE_AND_UPDATE_SERVICE_BLOCK.checkPermission(entityId, userId)) {
-                        PessimisticBlockEnum.DELETE_CLIENT_BLOCK.addBlock(userId, controller.getServiceClientId(entityId), ServerProperties.getInstance().getThreadWaitingBlock());
-                        PessimisticBlockEnum.DELETE_AND_UPDATE_SERVICE_BLOCK.addBlock(userId, entityId, ServerProperties.getInstance().getThreadWaitingBlock());
+                        PessimisticBlockEnum.DELETE_CLIENT_BLOCK.addBlock(userId, controller.getServiceClientId(entityId), ServerProperties.getInstance().getThreadWaitingBlock(), false);
+                        PessimisticBlockEnum.DELETE_AND_UPDATE_SERVICE_BLOCK.addBlock(userId, entityId, ServerProperties.getInstance().getThreadWaitingBlock(), true);
                         response.setMessage("true");
                     } else {
                         response.setMessage("Error: Command blocked");

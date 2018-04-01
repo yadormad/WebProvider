@@ -22,9 +22,9 @@ public class DeleteEntityAction implements Action{
             case "client":
                 if (controller.containsClient(entityId)) {
                     if (PessimisticBlockEnum.DELETE_CLIENT_BLOCK.checkPermission(entityId, userId)) {
-                        PessimisticBlockEnum.DELETE_CLIENT_BLOCK.addBlock(userId, entityId, ServerProperties.getInstance().getThreadPerformBlock());
+                        PessimisticBlockEnum.DELETE_CLIENT_BLOCK.addBlock(userId, entityId, ServerProperties.getInstance().getThreadPerformBlock(), false);
                         for (Service clientService:controller.getClientServices(entityId)) {
-                            PessimisticBlockEnum.DELETE_AND_UPDATE_SERVICE_BLOCK.addBlock(userId, clientService.getId(), ServerProperties.getInstance().getThreadPerformBlock());
+                            PessimisticBlockEnum.DELETE_AND_UPDATE_SERVICE_BLOCK.addBlock(userId, clientService.getId(), ServerProperties.getInstance().getThreadPerformBlock(), false);
                         }
                         controller.deleteClient(entityId);
                         response.setMessage("Client deleted");
@@ -38,8 +38,8 @@ public class DeleteEntityAction implements Action{
             case "service":
                 if (controller.containsService(entityId)) {
                     if (PessimisticBlockEnum.DELETE_AND_UPDATE_SERVICE_BLOCK.checkPermission(entityId, userId)) {
-                        PessimisticBlockEnum.DELETE_AND_UPDATE_SERVICE_BLOCK.addBlock(userId, entityId, ServerProperties.getInstance().getThreadPerformBlock());
-                        PessimisticBlockEnum.DELETE_CLIENT_BLOCK.addBlock(userId, controller.getServiceClientId(entityId), ServerProperties.getInstance().getThreadPerformBlock());
+                        PessimisticBlockEnum.DELETE_AND_UPDATE_SERVICE_BLOCK.addBlock(userId, entityId, ServerProperties.getInstance().getThreadPerformBlock(), false);
+                        PessimisticBlockEnum.DELETE_CLIENT_BLOCK.addBlock(userId, controller.getServiceClientId(entityId), ServerProperties.getInstance().getThreadPerformBlock(), false);
                         controller.deleteService(entityId);
                         response.setMessage("Service deleted");
                     } else {

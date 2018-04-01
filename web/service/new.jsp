@@ -16,6 +16,11 @@
 <%@include file="controller/viewnew.jsp"%>
 <%@include file="controller/submitnew.jsp"%>
 <%
+    Integer clientId ;
+    if (session.getAttribute("clientId") == null) {
+        clientId = Integer.parseInt(request.getParameter("addServiceButton"));
+        session.setAttribute("clientId", clientId);
+    }
     checkId(request, response);
     if(request.getParameter("addButton") != null) {
         addService(request, response);
