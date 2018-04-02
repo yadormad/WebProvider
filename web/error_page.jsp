@@ -9,6 +9,8 @@
 <p class="error">An error occured</p>
 <%exception.printStackTrace(System.out);%>
 <p class="error"><%=exception.getMessage()%></p>
-<a class="stpage" href="index.jsp">Back</a>
+<form class="inputform" action="error_page.jsp" method=post>
+    <jsp:include page="back/backbutton.jsp"/>
+</form>
 </body>
 </html>

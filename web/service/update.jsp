@@ -48,6 +48,10 @@
         <p class=error><%=request.getAttribute("error")%></p>
     </c:when>
 </c:choose>
-<button class=inputform onclick='history.back()'>Back</button>
+
+<form class="inputform" action="update.jsp" method=post>
+    <jsp:include page="../back/backbutton.jsp"/>
+</form>
+
 </body>
 </html>

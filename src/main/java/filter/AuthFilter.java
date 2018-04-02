@@ -16,10 +16,10 @@ public class AuthFilter implements Filter {
         HttpSession session = ((HttpServletRequest) request).getSession(true);
         if(session.getAttribute("authorized") != null && session.getAttribute("authorized").equals(true)) {
             chain.doFilter(request, response);
-        } else if ( ((HttpServletRequest)request).getServletPath().contains("index.jsp")) {
+        } else if ( ((HttpServletRequest)request).getServletPath().contains("login.jsp")) {
             chain.doFilter(request, response);
         } else {
-            ((HttpServletResponse) response).sendRedirect("/WebProvider_war/index.jsp");
+            ((HttpServletResponse) response).sendRedirect("/WebProvider_war/login.jsp");
         }
     }
 

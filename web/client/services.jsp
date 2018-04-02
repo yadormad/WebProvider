@@ -36,6 +36,10 @@
         <button class=inputform type=submit name=addServiceButton value=<%=clientId%>>Add service</button>
     </form>
 </c:if>
-<button class=inputform onclick='history.back()'>Back</button>
+
+<form class="inputform" action="services.jsp" method=post>
+    <jsp:include page="../back/backbutton.jsp"/>
+</form>
+
 </body>
 </html>

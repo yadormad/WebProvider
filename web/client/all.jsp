@@ -27,7 +27,11 @@
 <form class="inputform" action="../client/new.jsp" method=post>
     <button name="addButton" type="submit" class=inputform>Add client</button>
 </form>
-<button class=inputform onclick='history.back()'>Back</button>
+
+<form class="inputform" action="all.jsp" method=post>
+    <jsp:include page="../back/backbutton.jsp"/>
+</form>
+
 <c:if test="${requestScope.get('error') !=null}">
     <p class=error>
         <c:out value="${requestScope.get('error')}"/>
