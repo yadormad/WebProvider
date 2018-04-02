@@ -29,7 +29,7 @@
     <label for="pass" class = inputform>Password</label>
     <input type="password", id="pass", name="pass", required="required", class = inputform value="">
   </div>
-  <button name="performButton", type="submit", class=inputform>LogIn</button>
+  <button name="loginButton" type="submit" class=inputform value="pressed">LogIn</button>
   <c:choose>
     <c:when test="${sessionScope.get('authorized') != null && sessionScope.get('authorized').equals(true)}">
       <c:redirect url="menu.jsp"/>

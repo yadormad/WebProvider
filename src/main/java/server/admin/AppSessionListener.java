@@ -11,7 +11,7 @@ public class AppSessionListener implements HttpSessionListener {
     @Override
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
         System.out.println("Session for user " + httpSessionEvent.getSession().getId() + " created");
-        //httpSessionEvent.getSession().setMaxInactiveInterval(15/*Math.toIntExact(ServerProperties.getInstance().getThreadExecTimeout())/1000*/);
+        httpSessionEvent.getSession().setMaxInactiveInterval(Math.toIntExact(ServerProperties.getInstance().getThreadExecTimeout())/1000);
     }
 
     @Override
