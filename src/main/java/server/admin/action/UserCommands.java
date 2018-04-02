@@ -2,6 +2,7 @@ package server.admin.action;
 
 import entity.transport.TransportEntity;
 import server.admin.action.impl.*;
+import server.exceptions.DateConsecutionException;
 import server.exceptions.DateFormatException;
 import server.exceptions.DbAccessException;
 import server.exceptions.WrongServiceTypeException;
@@ -26,7 +27,7 @@ public enum UserCommands {
         this.action = action;
     }
 
-    public TransportEntity perform(TransportEntity request, String userId) throws WrongServiceTypeException, DbAccessException, DateFormatException {
+    public TransportEntity perform(TransportEntity request, String userId) throws WrongServiceTypeException, DbAccessException, DateFormatException, DateConsecutionException {
         return action.perform(request, userId);
     }
 }

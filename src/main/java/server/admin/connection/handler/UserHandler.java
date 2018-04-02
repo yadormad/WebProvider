@@ -3,6 +3,7 @@ package server.admin.connection.handler;
 import server.admin.StopThreadException;
 import server.admin.action.UserCommands;
 import server.admin.block.PessimisticBlockEnum;
+import server.exceptions.DateConsecutionException;
 import server.exceptions.DateFormatException;
 import server.exceptions.DbAccessException;
 import server.exceptions.WrongServiceTypeException;
@@ -23,7 +24,7 @@ public class UserHandler implements Callable<TransportEntity>{
     }
 
     @Override
-    public TransportEntity call() throws WrongServiceTypeException, DbAccessException, DateFormatException{
+    public TransportEntity call() throws WrongServiceTypeException, DbAccessException, DateFormatException, DateConsecutionException {
         String command = request.getCommand();
         TransportEntity response = UserCommands.valueOf(command.toUpperCase()).perform(request, userId);
         if(response.getResponseProviderEntities() != null)

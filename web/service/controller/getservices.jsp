@@ -52,8 +52,9 @@
 <%@include file="deleteservice.jsp"%>
 
 <%
+
     Integer clientId = null ;
-    if(session.getAttribute("clientButton") == null) {
+    if(request.getParameter("clientButton") != null) {
         clientId = Integer.parseInt(request.getParameter("clientButton"));
         session.setAttribute("clientButton", clientId);
     } else {

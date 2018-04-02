@@ -6,13 +6,16 @@ import server.admin.action.Action;
 import server.admin.block.PessimisticBlockEnum;
 import server.controller.Controller;
 import server.controller.factory.SingletonControllerFactory;
+import server.exceptions.DateConsecutionException;
+import server.exceptions.DateFormatException;
 import server.exceptions.DbAccessException;
+import server.exceptions.WrongServiceTypeException;
 import server.main.ServerProperties;
 
 public class UpdateServiceAction implements Action {
 
     @Override
-    public TransportEntity perform(TransportEntity request, String userId) throws DbAccessException {
+    public TransportEntity perform(TransportEntity request, String userId) throws DbAccessException, WrongServiceTypeException, DateFormatException, DateConsecutionException {
         Service currentlyUpdatedService = (Service) request.getRequsetObject();
         TransportEntity response = new TransportEntity();
         int serviceId = currentlyUpdatedService.getId();
@@ -22,11 +25,11 @@ public class UpdateServiceAction implements Action {
             PessimisticBlockEnum.DELETE_AND_UPDATE_SERVICE_BLOCK.addBlock(userId, serviceId, ServerProperties.getInstance().getThreadPerformBlock(), false);
             SingletonControllerFactory.getControllerFactory().getController(userId).updateService(currentlyUpdatedService);
             response.setMessage("Service updated");
+            PessimisticBlockEnum.DELETE_CLIENT_BLOCK.removeBlock(userId, controller.getServiceClientId(serviceId));
+            PessimisticBlockEnum.DELETE_AND_UPDATE_SERVICE_BLOCK.removeBlock(userId, serviceId);
         } else {
-            response.setMessage("Operation is blocked at this time, try again later");
+            response.setMessage("Error: Operation is blocked at this time, try again later");
         }
-        PessimisticBlockEnum.DELETE_CLIENT_BLOCK.removeBlock(userId, controller.getServiceClientId(serviceId));
-        PessimisticBlockEnum.DELETE_AND_UPDATE_SERVICE_BLOCK.removeBlock(userId, serviceId);
         return response;
     }
 }

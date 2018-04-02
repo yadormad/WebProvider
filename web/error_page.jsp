@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Error page</title>
-    <link rel="stylesheet" type="text/css" href="styles/mystyle1.css"/>
+    <link rel="stylesheet" type="text/css" href="./styles/mystyle1.css"/>
 </head>
 <body class = stpage>
 <p class="error">An error occured</p>

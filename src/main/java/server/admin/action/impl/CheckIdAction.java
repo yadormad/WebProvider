@@ -5,13 +5,16 @@ import server.admin.action.Action;
 import server.admin.block.PessimisticBlockEnum;
 import server.controller.Controller;
 import server.controller.factory.SingletonControllerFactory;
+import server.exceptions.DateConsecutionException;
+import server.exceptions.DateFormatException;
 import server.exceptions.DbAccessException;
+import server.exceptions.WrongServiceTypeException;
 import server.main.ServerProperties;
 
 public class CheckIdAction implements Action{
 
     @Override
-    public TransportEntity perform(TransportEntity request, String userId) throws DbAccessException {
+    public TransportEntity perform(TransportEntity request, String userId) throws DbAccessException, WrongServiceTypeException, DateFormatException, DateConsecutionException {
         TransportEntity response = new TransportEntity();
         response.setMessage("Error: unexpected");
         String command = request.getMessage();

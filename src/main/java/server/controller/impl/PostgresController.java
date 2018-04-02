@@ -4,6 +4,7 @@ import entity.impl.Client;
 import entity.impl.Service;
 import login.LoginEntity;
 import server.controller.Controller;
+import server.exceptions.DateConsecutionException;
 import server.exceptions.DateFormatException;
 import server.exceptions.DbAccessException;
 import server.exceptions.WrongServiceTypeException;
@@ -67,7 +68,8 @@ public class PostgresController implements Controller {
     }
 
     @Override
-    public void addService(Service newService) throws DbAccessException {
+    public void addService(Service newService) throws DbAccessException, DateConsecutionException {
+        if(newService.getServiceProvisionDate().after(newService.getServiceDisablingDate())) throw new DateConsecutionException("Provision date must be after disabling date");
         serviceManager.addService(newService);
     }
 
@@ -77,7 +79,8 @@ public class PostgresController implements Controller {
     }
 
     @Override
-    public void updateService(Service service) throws DbAccessException {
+    public void updateService(Service service) throws DbAccessException, DateConsecutionException {
+        if(service.getServiceProvisionDate().after(service.getServiceDisablingDate())) throw new DateConsecutionException("Provision date must be after disabling date");
         serviceManager.updateService(service);
     }
 
