@@ -2,6 +2,7 @@ package server.controller.impl;
 
 import entity.impl.Client;
 import entity.impl.Service;
+import entity.impl.ServiceType;
 import login.LoginEntity;
 import server.controller.Controller;
 import server.exceptions.DateConsecutionException;
@@ -113,5 +114,10 @@ public class PostgresController implements Controller {
     @Override
     public Service getService(int id) throws DbAccessException {
         return serviceManager.getServiceById(id);
+    }
+
+    @Override
+    public Collection<Service> getServicesByType(ServiceType type) throws WrongServiceTypeException, DbAccessException {
+        return serviceManager.getServiceByType(type);
     }
 }

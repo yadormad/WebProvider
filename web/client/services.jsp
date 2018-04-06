@@ -9,7 +9,7 @@
 <%@ page errorPage="../error_page.jsp" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
-<%@include file="../service/controller/getservices.jsp"%>
+<%@include file="../service/controller/viewservices.jsp"%>
 
 <html>
 <head>

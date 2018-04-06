@@ -2,6 +2,7 @@ package server.model.service;
 
 import entity.impl.Client;
 import entity.impl.Service;
+import entity.impl.ServiceType;
 import login.LoginEntity;
 import server.exceptions.DateFormatException;
 import server.exceptions.DbAccessException;
@@ -18,4 +19,6 @@ public interface ServiceManager {
     Collection<Service> getClientServices(int clientId) throws DbAccessException, WrongServiceTypeException;
     int getServiceClientId(int serviceId) throws DbAccessException;
     Service getServiceById(int id) throws DbAccessException;
+
+    Collection<Service> getServiceByType(ServiceType type) throws WrongServiceTypeException, DbAccessException;
 }

@@ -17,7 +17,7 @@
 <%@include file="controller/submitnew.jsp"%>
 <%
     Integer clientId ;
-    if (session.getAttribute("clientId") == null) {
+    if(request.getParameter("addServiceButton") != null) {
         clientId = Integer.parseInt(request.getParameter("addServiceButton"));
         session.setAttribute("clientId", clientId);
     }

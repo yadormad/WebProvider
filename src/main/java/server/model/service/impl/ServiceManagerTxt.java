@@ -122,4 +122,9 @@ public class ServiceManagerTxt implements ServiceManager {
     public Service getServiceById(int id) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public Collection<Service> getServiceByType(ServiceType type) {
+        throw new UnsupportedOperationException();
+    }
 }

@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<%@include file="controller/getall.jsp"%>
+<%@include file="controller/viewall.jsp"%>
 <html>
 <head>
     <title>Clients table</title>

@@ -187,6 +187,28 @@ public class ServiceManagerPostgres implements ServiceManager{
         return service;
     }
 
+    @Override
+    public Collection<Service> getServiceByType(ServiceType type) throws WrongServiceTypeException, DbAccessException {
+        ArrayList<Service> servicesByType = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement getClientServicesSQLStatement = null;
+        ResultSet servicesByTypeResultSet = null;
+        try {
+            conn = DriverManager.getConnection(dataBaseURL, login, password);
+            getClientServicesSQLStatement = conn.prepareStatement("SELECT * FROM public.services WHERE type = ?");
+            getClientServicesSQLStatement.setString(1, type.name());
+            servicesByTypeResultSet = getClientServicesSQLStatement.executeQuery();
+            fillServiceCollectionFromResultSet(servicesByTypeResultSet, servicesByType);
+        } catch (SQLException e) {
+            throw new DbAccessException("Database connection error");
+        } finally {
+            try { Objects.requireNonNull(servicesByTypeResultSet).close(); } catch (Exception e) { /* ignored */ }
+            try { Objects.requireNonNull(getClientServicesSQLStatement).close(); } catch (Exception e) { /* ignored */ }
+            try { Objects.requireNonNull(conn).close(); } catch (Exception e) { /* ignored */ }
+        }
+        return servicesByType;
+    }
+
     private void fillServiceCollectionFromResultSet(ResultSet resultSet, Collection<Service> serviceCollection) throws WrongServiceTypeException, SQLException {
         try {
             while (resultSet.next()) {

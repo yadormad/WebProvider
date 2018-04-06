@@ -15,6 +15,7 @@ public enum UserCommands {
     CHECKID(new CheckIdAction()),
     GETCLIENT(new GetClientAction()),
     GETSERVICE(new GetServiceAction()),
+    GETSERVICESBYTYPE(new GetServicesByTypeAction()),
     CLIENTSERVICES(new ClientServicesAction()),
     DELETE(new DeleteEntityAction()),
     UPDSERVICE(new UpdateServiceAction()),

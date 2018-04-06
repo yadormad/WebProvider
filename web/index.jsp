@@ -12,12 +12,12 @@
     <title>Menu</title>
     <link rel="stylesheet" type="text/css" href="styles/mystyle1.css"/>
 </head>
-<h1 class = stpage>Activity menu</h1>
 <body class = stpage>
+<h1 class = stpage>Activity menu</h1>
 <form class="inputform" action="client/all.jsp" method=post>
-    <button name="performButton", type="submit", class=inputform>View all clients</button>
+    <button name="performButton" type="submit" class=inputform>View all clients</button>
 </form>
-<form class="inputform" action="../services.jsp" method=post>
+<form class="inputform" action="service/menu.jsp" method=post>
     <button name="performButton" type="submit" class=inputform>View all services</button>
 </form>
 

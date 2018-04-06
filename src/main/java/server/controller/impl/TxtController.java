@@ -2,6 +2,7 @@ package server.controller.impl;
 
 import entity.impl.Client;
 import entity.impl.Service;
+import entity.impl.ServiceType;
 import login.LoginEntity;
 import server.controller.sequence.TxtIdSequence;
 import server.exceptions.DateFormatException;
@@ -181,6 +182,11 @@ public class TxtController implements Controller{
 
     @Override
     public Service getService(int id) {
+        return null;
+    }
+
+    @Override
+    public Collection<Service> getServicesByType(ServiceType type) {
         return null;
     }
 }

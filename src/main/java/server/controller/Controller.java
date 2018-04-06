@@ -2,6 +2,7 @@ package server.controller;
 
 import entity.impl.Client;
 import entity.impl.Service;
+import entity.impl.ServiceType;
 import login.LoginEntity;
 import server.exceptions.DateConsecutionException;
 import server.exceptions.DateFormatException;
@@ -27,4 +28,5 @@ public interface Controller {
     int getServiceClientId(int serviceId) throws DbAccessException;
     Client getClient(int id) throws DbAccessException;
     Service getService(int id) throws DbAccessException;
+    Collection<Service> getServicesByType(ServiceType type) throws WrongServiceTypeException, DbAccessException;
 }
