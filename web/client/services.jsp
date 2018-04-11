@@ -12,6 +12,7 @@
 <jsp:useBean id="userBean" class="controller.UserSessionBean" scope="session">
     <jsp:setProperty name="userBean" property="*"/>
 </jsp:useBean>
+
 <c:choose>
     <c:when test="${not empty param.getServices}">
         <c:set var="client" value="${userBean.getClient(param.getServices)}" scope="request"/>
@@ -20,6 +21,7 @@
         <c:set var="client" value="${userBean.getClientOfService(param.deleteService)}" scope="page"/>
     </c:when>
 </c:choose>
+
 <c:if test="${empty client}">
     <c:redirect url="all.jsp?errorMessage=noclient"/>
 </c:if>

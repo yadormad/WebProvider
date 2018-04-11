@@ -15,7 +15,7 @@ public enum PessimisticBlockEnum {
         this.userBlockMapping = userBlockMapping;
     }
 
-    public synchronized boolean checkPermission(int entityId, String userId) {
+    public synchronized UUID checkPermission(int entityId, String userId, UUID blockId, long timeout) {
         System.out.println("Check block for " + userId);
         /*if (userBlockMapping.get(userId).containsKey(entityId)) {
             return true;
@@ -26,19 +26,29 @@ public enum PessimisticBlockEnum {
             Set<Integer> entityIdKeySet = userBlocks.keySet();
             for (Integer entityIdFromKeySet:entityIdKeySet) {
                 if(userBlocks.get(entityId) != null && userBlocks.get(entityId).isBlocked()) {
-                    if (userIdFromKeySet.equals(userId) && !userBlocks.get(entityId).isPrepared())
-                        return false;
+                    if (userIdFromKeySet.equals(userId)) {
+                        if(userBlocks.get(entityId).getBlockId().equals(blockId)) {
+                            userBlocks.get(entityId).updateUnblockTime(timeout);
+                            return blockId;
+                        } else {
+                            return null;
+                        }
+                    } else {
+                        return null;
+                    }
                 }
                 if (!userBlocks.get(entityIdFromKeySet).isBlocked()) {
                    removeBlock(userIdFromKeySet, entityIdFromKeySet);
                 }
             }
         }
-        return true;
+        return addBlock(userId, entityId, timeout);
     }
 
-    public void addBlock(String userId, int entityId, long timeOut, boolean isPrepared) {
-        userBlockMapping.get(userId).put(entityId, new PessimisticBlock(entityId, timeOut, isPrepared));
+    public UUID addBlock(String userId, int entityId, long timeOut) {
+        UUID blockId = UUID.randomUUID();
+        userBlockMapping.get(userId).put(entityId, new PessimisticBlock(entityId, timeOut, blockId));
+        return blockId;
     }
 
     public void clearBlocks(String userId) {
@@ -49,9 +59,14 @@ public enum PessimisticBlockEnum {
         userBlockMapping.remove(userId);
     }
 
-    public void removeBlock(String userId, int entityId) {
+    private void removeBlock(String userId, int entityId) {
         userBlockMapping.get(userId).remove(entityId);
+    }
 
+    public void removeBlock(String userId, int entityId, UUID blockId) {
+        if (userBlockMapping.get(userId).get(entityId).getBlockId().equals(blockId)) {
+            userBlockMapping.get(userId).remove(entityId);
+        }
     }
 
     public void addUser(String userId) {

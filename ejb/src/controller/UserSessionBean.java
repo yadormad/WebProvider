@@ -67,14 +67,19 @@ public class UserSessionBean {
         return "Client " + name + " successfully added";
     }
 
-    public String deleteClient (Integer id) throws FinderException, RemoveException {
-        LocalClient deletedClient = clientHome.findByPrimaryKey(id);
-        String deletedClientName = deletedClient.getName();
-        for (LocalService clientsService:getServicesByClientId(id)) {
-            clientsService.remove();
+    public String deleteClient (Integer id, UUID blockId) throws FinderException, RemoveException {
+        if(PessimisticBlockEnum.DELETE_CLIENT_BLOCK.checkPermission(id, login, blockId, 60000) != null) {
+            LocalClient deletedClient = clientHome.findByPrimaryKey(id);
+            String deletedClientName = deletedClient.getName();
+            for (LocalService clientsService : getServicesByClientId(id)) {
+                clientsService.remove();
+            }
+            deletedClient.remove();
+            unblockClient(id, blockId);
+            return "Client " + deletedClientName + " successfully deleted";
+        } else {
+            return "The operation is blocked at the moment";
         }
-        deletedClient.remove();
-        return "Client " + deletedClientName + " successfully deleted";
     }
 
     public String addService(Integer clientId, String name, ServiceType type, Date startDate, Date endDate) throws CreateException {
@@ -139,4 +144,11 @@ public class UserSessionBean {
         return serviceClientMap;
     }
 
+    public UUID blockClient(Integer clientId, UUID blockId) {
+        return PessimisticBlockEnum.DELETE_CLIENT_BLOCK.checkPermission(clientId, login, blockId, 60000);
+    }
+
+    public void unblockClient(Integer clientId, UUID blockId) {
+        PessimisticBlockEnum.DELETE_CLIENT_BLOCK.removeBlock(login, clientId, blockId);
+    }
 }

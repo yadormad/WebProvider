@@ -1,20 +1,21 @@
 package admin.block.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class PessimisticBlock {
     private int blockedEntityId; // id заблокированной сущности
     private long unblockTime; //время блокировки
-    private boolean isPrepared;
+    private UUID blockId;
 
-    public PessimisticBlock(int blockedEntityId, long blockTimeout, boolean isPrepared) {
-        this.isPrepared = isPrepared;
+    public PessimisticBlock(int blockedEntityId, long blockTimeout, UUID blockId) {
         unblockTime = new Date().getTime() + blockTimeout;
         this.blockedEntityId = blockedEntityId;
+        this.blockId = blockId;
     }
 
-    public boolean isPrepared() {
-        return isPrepared;
+    public UUID getBlockId() {
+        return blockId;
     }
 
     public boolean isBlocked(){
