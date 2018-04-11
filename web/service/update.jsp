@@ -8,50 +8,60 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page errorPage="../error_page.jsp" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
-<%! private int serviceId; %>
+<jsp:useBean id="userBean" class="controller.UserSessionBean" scope="session">
+    <jsp:setProperty name="userBean" property="*"/>
+</jsp:useBean>
 
-<%@include file="controller/submitupdate.jsp"%>
-<%@include file="controller/viewupdate.jsp"%>
+<c:choose>
+    <c:when test="${not empty param.updateService}">
+        <c:set var="service" value="${userBean.getService(param.updateService)}" scope="request"/>
+    </c:when>
+    <c:when test="${not empty param.updButton}">
+        <c:set var="service" value="${userBean.getService(param.updButton)}" scope="request"/>
+    </c:when>
+    <c:otherwise>
+        <c:redirect url="../client/all.jsp?errorMessage=noclient"/>
+    </c:otherwise>
+</c:choose>
 
+<c:set var="clientName" value="${userBean.getClientOfService(service.primaryKey).name}" scope="request"/>
+
+<fmt:formatDate pattern="yyyy-MM-dd" var="formattedProvisionDate" value="${service.startDate}" scope="request"/>
+<fmt:formatDate pattern="yyyy-MM-dd" var="formattedDisablingDate" value="${service.endDate}" scope="request"/>
+
+<c:if test="${not empty param.updButton}">
+    <fmt:parseDate pattern="yyyy-MM-dd" var="parsedProvisionDate" value="${param.provisionDate}" scope="request"/>
+    <fmt:parseDate pattern="yyyy-MM-dd" var="parsedDisablingDate" value="${param.disablingDate}" scope="request"/>
+    <c:set var="updateServiceMessage" value="${userBean.updateService(param.updButton, param.name, parsedProvisionDate, parsedDisablingDate)}"/>
+</c:if>
 <html>
 <head>
-    <title>Update <%=client.getName()%>'s service</title>
+    <title>Update <c:out value="${clientName}"/>'s service</title>
     <link rel="stylesheet" type="text/css" href="../styles/mystyle1.css"/>
 </head>
 <body class="stpage">
-<h1 class="stpage">Update <%=client.getName()%>'s service</h1>
-<form class="inputform" action="update.jsp" method=post>
+<h1 class="stpage">Update <c:out value="${clientName}"/>'s service</h1>
+<form class="inputform" action="update.jsp" method=get>
     <div style="display: inline-block">
         <label for=name class = inputform>Service name</label>
-        <input type=text id=name name=name required=required class = inputform value=<%=service.getName()%>>
+        <input type=text id=name name=name required=required class = inputform value="<c:out value="${service.name}"/>">
     </div>
     <div style="display: inline-block">
         <label for=provisionDate class = inputform>Provision date</label>
-        <input type=date id=provisionDate name=provisionDate required=required class = inputform value=<%=dateFormat.format(service.getServiceProvisionDate())%>>
+        <input type=date id=provisionDate name=provisionDate required=required class = inputform value="<c:out value="${formattedProvisionDate}"/>">
     </div>
     <div style="display: inline-block">
         <label for=disablingDate class = inputform>Disabling date</label>
-        <input type=date id=disablingDate name=disablingDate required=required class = inputform value=<%=dateFormat.format(service.getServiceDisablingDate())%>>
+        <input type=date id=disablingDate name=disablingDate required=required class = inputform value="<c:out value="${formattedDisablingDate}"/>">
     </div>
-    <c:choose>
-        <c:when test="${requestScope.get('blocked') != null}">
-            <p class=error><%=request.getAttribute("blocked")%></p>
-        </c:when>
-        <c:otherwise>
-            <button name=updButton type=submit class=inputform value=<%=serviceId%>> Update</button>
-        </c:otherwise>
-    </c:choose>
+    <button name=updButton type=submit class=inputform value="<c:out value="${service.primaryKey}"/>">Update</button>
 </form>
-<c:choose>
-    <c:when test="${requestScope.get('error') != null}">
-        <p class=error><%=request.getAttribute("error")%></p>
-    </c:when>
-</c:choose>
-
-<form class="inputform" action="update.jsp" method=post>
-    <jsp:include page="../back/backbutton.jsp"/>
-</form>
+<c:if test="${not empty updateServiceMessage}">
+    <p><c:out value="${updateServiceMessage}"/></p>
+</c:if>
+<a href="../client/services.jsp?getServices=${client.primaryKey}" class="stpage">Back</a>
 
 </body>
 </html>

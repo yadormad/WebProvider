@@ -39,9 +39,5 @@
     </c:when>
   </c:choose>
 </form>
-
-<form class="inputform" action="login.jsp" method=post>
-    <jsp:include page="back/backbutton.jsp"/>
-</form>
 </body>
 </html>

@@ -1,4 +1,3 @@
-<%@ page import="entity.impl.Client" %>
 <%@ page errorPage="../error_page.jsp" %>
 <%--
   Created by IntelliJ IDEA.
@@ -9,69 +8,70 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
-<%!
-    private Client client;
-%>
-<%@include file="controller/viewnew.jsp"%>
-<%@include file="controller/submitnew.jsp"%>
-<%
-    Integer clientId ;
-    if(request.getParameter("addServiceButton") != null) {
-        clientId = Integer.parseInt(request.getParameter("addServiceButton"));
-        session.setAttribute("clientId", clientId);
-    }
-    checkId(request, response);
-    if(request.getParameter("addButton") != null) {
-        addService(request, response);
-    }
-%>
+<jsp:useBean id="userBean" class="controller.UserSessionBean" scope="session">
+    <jsp:setProperty name="userBean" property="*"/>
+</jsp:useBean>
 
+<c:choose>
+    <c:when test="${not empty param.addService}">
+        <c:set var="client" value="${userBean.getClient(param.addService)}" scope="request"/>
+    </c:when>
+    <c:when test="${not empty param.addButton}">
+        <c:set var="client" value="${userBean.getClient(param.addButton)}" scope="request"/>
+    </c:when>
+    <c:otherwise>
+        <c:redirect url="../client/all.jsp?errorMessage=noclient"/>
+    </c:otherwise>
+</c:choose>
 
+<c:if test="${not empty param.addButton}">
+    <fmt:parseDate pattern="yyyy-MM-dd" var="parsedProvisionDate" value="${param.provisionDate}" scope="request"/>
+    <fmt:parseDate pattern="yyyy-MM-dd" var="parsedDisablingDate" value="${param.disablingDate}" scope="request"/>
+    <c:set var="addSericeMessage" value="${userBean.addService(client.primaryKey, param.name, param.type, parsedProvisionDate, parsedDisablingDate)}"/>
+</c:if>
+
+<c:set var="unusedTypes" value="${userBean.getUnusedServiceTypes(client.primaryKey)}" scope="request"/>
+
+<c:if test="${empty unusedTypes}">
+    <c:redirect url="../client/services.jsp?getServices=${client.primaryKey}"/>
+</c:if>
 
 <html>
 <head>
-    <title>Add service to <%=client.getName()%></title>
+    <title>Add service to <c:out value="${client.name}"/></title>
     <link rel="stylesheet" type="text/css" href="../styles/mystyle1.css"/>
 </head>
 <body class="stpage">
-<h1 class="stpage">Add service to <%=client.getName()%></h1>
-<p>Client info: <%=client.getInfo()%></p>
-<form class="inputform" action="new.jsp" method=post>
-    <div style="display: inline-block">
-        <%=typesRadio(request, response)%>
+<h1 class="stpage">Add service to <c:out value="${client.name}"/></h1>
+<p>Client info: <c:out value="${client.info}"/></p>
+<form class="inputform" action="new.jsp" method=get>
+    <div>
+        <label for=type class = inputform>Service type</label>
+        <c:forEach var="type" items="${unusedTypes}">
+            <input type="radio" id="type" name="type" value="<c:out value="${type}"/>" checked> <c:out value="${type}"/> <br>
+        </c:forEach>
     </div>
-    <div style="display: inline-block">
+    <div>
         <label for=name class = inputform>Service name</label>
         <input type=text id=name name=name required=required class = inputform value="">
     </div>
-    <div style="display: inline-block">
+    <div>
         <label for=provisionDate class = inputform>Provision date</label>
         <input type=date id=provisionDate name=provisionDate required=required class = inputform value="">
     </div>
-    <div style="display: inline-block">
+    <div>
         <label for=disablingDate class = inputform>Disabling date</label>
         <input type=date id=disablingDate name=disablingDate required=required class = inputform value="">
     </div>
-    <c:choose>
-        <c:when test="${requestScope.get('blocked') != null}">
-            <p class=error><%=request.getAttribute("blocked")%></p>
-        </c:when>
-        <c:otherwise>
-            <button name=addButton type=submit class=inputform value="submitted">Add</button>
-        </c:otherwise>
-    </c:choose>
+    <button name=addButton type=submit class=inputform value="<c:out value="${client.primaryKey}"/>">Add service</button>
 </form>
-<c:choose>
-    <c:when test="${requestScope.get('error') != null}">
-        <p class=error><%=request.getAttribute("error")%></p>
-    </c:when>
-</c:choose>
+<c:if test="${not empty addSericeMessage}">
+    <p><c:out value="${addSericeMessage}"/></p>
+</c:if>
 
-
-<form class="inputform" action="new.jsp" method=post>
-    <jsp:include page="../back/backbutton.jsp"/>
-</form>
+<a href="../client/services.jsp?getServices=${client.primaryKey}" class="stpage">Back</a>
 
 </body>
 </html>

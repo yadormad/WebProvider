@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="ear" name="WebProvider:javaEEApplication">
+    <output-path>$PROJECT_DIR$/out/artifacts/WebProvider_javaEEApplication</output-path>
+    <root id="archive" name="WebProvider_javaEEApplication.ear">
+      <element id="artifact" artifact-name="WebProvider:javaEEApplication exploded" />
+    </root>
+  </artifact>
+</component>

@@ -13,7 +13,7 @@ p.error{
     font-family: Times, serif;
     font-size: 16px;
     font-weight: bold;
-    color: rgba(227, 28, 0, 0.93);
+    color: rgba(212, 113, 109, 0.88);
     text-align: left;
 }
 
@@ -28,7 +28,8 @@ h1.stpage{
 }
 a.stpage{
     font-family: Times, serif;
-    font-size: 16px;
+    left: 40%;
+    font-size: 25px;
     color: lightgrey;
 }
 a.stpage:hover {
@@ -112,15 +113,15 @@ tr, th, td{
     color: rgb(79,79,79);
 }
 
-a{
+a.tableform{
     font-family: Times, serif;
     font-size: 16px;
     color: rgb(79,79,79);
 }
-a:hover {
+a.tableform:hover {
     color: black;
 }
-a:active {
+a.tableform:active {
     color: darkgray;
 }
 

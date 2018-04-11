@@ -7,22 +7,26 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<jsp:include page="controller/viewmenu.jsp"/>
+
+<jsp:useBean id="userBean" class="controller.UserSessionBean" scope="session">
+    <jsp:setProperty name="userBean" property="*"/>
+</jsp:useBean>
+
 <html>
 <head>
     <title>Service types</title>
     <link rel="stylesheet" type="text/css" href="../styles/mystyle1.css"/>
 </head>
-<body class="inputform">
-<c:set var="list" value="${sessionScope.get('ServiceTypes')}" scope="page"/>
-<h1>Service types</h1>
+<body class="stpage">
+<h1 class="stpage">Service types</h1>
 <form class="inputform" action="all.jsp" method=post>
-    <c:forEach var="type" items="${list}">
-        <button name=allServices type=submit class=inputform value=<c:out value="${type.name()}"/>>View <c:out value="${type.name()}"/></button>
+    <c:forEach var="type" items="${userBean.allServiceTypes}">
+        <button name=serviceType type=submit class=inputform value="<c:out value="${type.name()}"/>">View <c:out value="${type.name()}"/></button>
     </c:forEach>
 </form>
-<form class="inputform" action="menu.jsp" method=post>
-    <jsp:include page="../back/backbutton.jsp"/>
-</form>
+<c:if test="${not empty param.errorMessage && param.errorMessage.equals('noclient')}">
+    <p class="error">No client was chosen</p>
+</c:if>
+<a href="../index.jsp" class="stpage">Back</a>
 </body>
 </html>

@@ -20,9 +20,5 @@
 <form class="inputform" action="service/menu.jsp" method=post>
     <button name="performButton" type="submit" class=inputform>View all services</button>
 </form>
-
-<form class="inputform" action="index.jsp" method=post>
-    <jsp:include page="back/backbutton.jsp"/>
-</form>
 </body>
 </html>

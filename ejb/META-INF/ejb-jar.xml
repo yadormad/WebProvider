@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/ejb-jar_3_1.xsd"
+         version="3.1">
+
+    <enterprise-beans>
+        <session>
+            <ejb-name>AuthentificationEJB</ejb-name>
+            <ejb-class>admin.AuthentificationBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+        </session>
+        <session>
+            <ejb-name>UserSessionEJB</ejb-name>
+            <ejb-class>controller.UserSessionBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+        </session>
+        <entity>
+            <ejb-name>ServiceEJB</ejb-name>
+            <local-home>model.service.LocalServiceHome</local-home>
+            <local>model.service.LocalService</local>
+            <ejb-class>model.service.ServiceBean</ejb-class>
+            <persistence-type>Bean</persistence-type>
+            <prim-key-class>java.lang.Integer</prim-key-class>
+            <reentrant>true</reentrant>
+        </entity>
+        <entity>
+            <ejb-name>ClientEJB</ejb-name>
+            <local-home>model.client.LocalClientHome</local-home>
+            <local>model.client.LocalClient</local>
+            <ejb-class>model.client.ClientBean</ejb-class>
+            <persistence-type>Bean</persistence-type>
+            <prim-key-class>java.lang.Integer</prim-key-class>
+            <reentrant>true</reentrant>
+        </entity>
+    </enterprise-beans>
+</ejb-jar>

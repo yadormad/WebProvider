@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-ear" name="WebProvider:javaEEApplication exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/WebProvider_javaEEApplication_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="WebProvider/javaeeApplication/javaEEApplication" />
+      <element id="artifact" artifact-name="ejb:ejb" />
+      <element id="artifact" artifact-name="WebProvider:war" />
+      <element id="directory" name="lib">
+        <element id="library" level="project" name="Java EE 6-Java EE 6" />
+      </element>
+    </root>
+  </artifact>
+</component>

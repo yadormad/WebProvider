@@ -8,29 +8,44 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
-<c:choose>
-    <c:when test="${param.containsKey('allServices')}">
-        <c:set var="serviceType" scope="session" value="${param.get('allServices')}"/>
-    </c:when>
-</c:choose>
+<jsp:useBean id="userBean" class="controller.UserSessionBean" scope="session">
+    <jsp:setProperty name="userBean" property="*"/>
+</jsp:useBean>
 
-<%@include file="controller/viewall.jsp"%>
+<c:if test="${empty param.serviceType}">
+    <c:redirect url="menu.jsp?errorMessage=notype"/>
+</c:if>
+
+
+<c:set var="serviceClientMap" value="${userBean.getServiceClientMap(param.serviceType)}" scope="request"/>
 
 <html>
 <head>
-    <title><c:out value="${sessionScope.get('serviceType')}"/> Service</title>
+    <title><c:out value="${param.serviceType}"/> services</title>
     <link rel="stylesheet" type="text/css" href="../styles/mystyle1.css"/>
 </head>
-<body>
+<body class="stpage">
+<h1 class="stpage"><c:out value="${param.serviceType}"/> services</h1>
 <table>
     <tr>
-        <th>Name</th>
+        <th>Client</th>
+        <th>Service name</th>
         <th>Provision date</th>
         <th>Disabling date</th>
     </tr>
-    <%
-        out.print(viewAsRows());
-    %>
+    <c:forEach var="keyService" items="${userBean.getServiceClientMap(param.serviceType).keySet()}">
+        <tr>
+            <td>
+                <a href="../client/services.jsp?getServices=${serviceClientMap.get(keyService).primaryKey}" class="tableform">
+                    ${serviceClientMap.get(keyService).name}
+                </a>
+            </td>
+            <td><c:out value="${keyService.name}"/></td>
+            <td><c:out value="${keyService.startDate}"/></td>
+            <td><c:out value="${keyService.endDate}"/></td>
+        </tr>
+    </c:forEach>
 </table>
+<a href="menu.jsp" class="stpage">Back</a>
 </body>
 </html>
