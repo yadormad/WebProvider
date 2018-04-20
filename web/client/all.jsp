@@ -26,6 +26,7 @@
     <tr>
         <th>Name</th>
         <th>Action</th>
+        <th>Xml</th>
     </tr>
     <c:forEach items="${userBean.allClients}" var="client">
         <tr>
@@ -37,6 +38,9 @@
                 <form class="tableform" action="all.jsp" method="get">
                     <button class="inputform" name="deleteClient" value="<c:out value="${client.primaryKey}"/>" type="submit">Delete</button>
                 </form>
+            </td>
+            <td>
+                <a href="../export.xml?clientId=${client.primaryKey}" class="stpage">Download xml</a>
             </td>
         </tr>
     </c:forEach>

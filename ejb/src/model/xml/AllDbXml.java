@@ -27,19 +27,21 @@ public class AllDbXml {
         this.clients = clients;
     }
 
-    public void loadFromDb(LocalClientHome clientHome, LocalServiceHome serviceHome) {
-        try {
-            clients = new ArrayList<>();
-            for(LocalClient client:(Collection<LocalClient>) clientHome.findAll()) {
+    public void loadFromDb(LocalClientHome clientHome, LocalServiceHome serviceHome, Integer clientId) throws FinderException {
+        clients = new ArrayList<>();
+        if(clientId == null) {
+            for (LocalClient client : (Collection<LocalClient>) clientHome.findAll()) {
                 ClientXml clientXml = new ClientXml();
-                clientXml.setId((Integer) client.getPrimaryKey());
-                clientXml.setName(client.getName());
-                clientXml.setInfo(client.getInfo());
+                clientXml.parseClientXml(client);
                 clientXml.loadService(serviceHome);
                 clients.add(clientXml);
             }
-        } catch (FinderException e) {
-            e.printStackTrace();
+        } else {
+            LocalClient client = clientHome.findByPrimaryKey(clientId);
+            ClientXml clientXml = new ClientXml();
+            clientXml.parseClientXml(client);
+            clientXml.loadService(serviceHome);
+            clients.add(clientXml);
         }
     }
 

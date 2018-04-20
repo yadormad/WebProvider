@@ -15,11 +15,12 @@
 </head>
 <body class = stpage>
 <h1 class = stpage>Import xml</h1>
-<form class="inputform" action="setxml.xml" method=post enctype="multipart/form-data">
+<form class="inputform" action="import.xml" method=post enctype="multipart/form-data">
     <input type="file" required="required" class="inputform" name="xmlfile">
     <button type="submit" class="inputform">Submit</button>
 </form>
 <p><c:out value="${param.ImportMessage}"/></p>
+<p class="error"><c:out value="${param.ErrorMessage}"/></p>
 <a href="index.jsp" class="stpage">Back</a>
 </body>
 </html>

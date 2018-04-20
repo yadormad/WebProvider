@@ -1,5 +1,6 @@
 package model.xml;
 
+import model.client.LocalClient;
 import model.client.LocalClientHome;
 import model.service.LocalService;
 import model.service.LocalServiceHome;
@@ -106,5 +107,11 @@ public class ClientXml {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void parseClientXml(LocalClient clientBean) {
+        id = (Integer) clientBean.getPrimaryKey();
+        name = clientBean.getName();
+        info = clientBean.getInfo();
     }
 }

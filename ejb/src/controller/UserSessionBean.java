@@ -171,9 +171,9 @@ public class UserSessionBean {
         return serviceClientMap;
     }
 
-    public void exportIntoXml(OutputStream outputStream) throws JAXBException, IOException {
+    public void exportIntoXml(OutputStream outputStream, Integer clientId) throws JAXBException, FinderException {
         AllDbXml xmlClass = new AllDbXml();
-        xmlClass.loadFromDb(clientHome, serviceHome);
+        xmlClass.loadFromDb(clientHome, serviceHome, clientId);
         JAXBContext jaxbContext = JAXBContext.newInstance(AllDbXml.class);
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
@@ -190,8 +190,9 @@ public class UserSessionBean {
     }
 
     private void validateXml(Source xmlSource) throws IOException, SAXException {
+        InputStream schemaInputStream = UserSessionBean.class.getClassLoader().getResourceAsStream("schema1.xsd");
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        Schema schema = schemaFactory.newSchema(new File("schema1.xsd"));
+        Schema schema = schemaFactory.newSchema(new StreamSource(schemaInputStream));
         Validator validator = schema.newValidator();
         validator.validate(xmlSource);
     }

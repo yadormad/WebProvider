@@ -23,21 +23,23 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @MultipartConfig
-public class ImportXml extends HttpServlet {
+public class ImportAllXml extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserSessionBean userSessionBean = (UserSessionBean) req.getSession().getAttribute("userBean");
         Part importXmlFilePart = req.getPart("xmlfile");
         String message = "";
+        String errorMessage = "";
         try {
             userSessionBean.importXml(importXmlFilePart);
             message = "xml import succ";
         } catch (SAXException e) {
-            message = "xml file isn't valid " + e.getMessage();
+            message = "xml file isn't valid";
+            errorMessage = e.getMessage();
         } catch (JAXBException e) {
             e.printStackTrace();
         } finally {
-            resp.sendRedirect("/WebProviderWeb/import.jsp?ImportMessage=" + message);
+            resp.sendRedirect("/WebProviderWeb/import.jsp?ImportMessage=" + message + "&ErrorMessage=" + errorMessage);
         }
     }
 }
