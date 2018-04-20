@@ -11,6 +11,7 @@ import java.util.Collection;
 public interface LocalServiceHome extends EJBLocalHome {
     LocalService findByPrimaryKey(Integer key) throws FinderException;
     LocalService create(Integer clientId, String name, ServiceType type, Date startDate, Date endDate) throws CreateException;
+    LocalService create(Integer id, Integer clientId, String name, ServiceType type, Date startDate, Date endDate) throws CreateException;
     Collection findAll() throws FinderException;
     Collection findByClientId(Integer clientId) throws FinderException;
     Collection findByType(ServiceType type) throws FinderException;

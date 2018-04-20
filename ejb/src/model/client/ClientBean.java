@@ -4,6 +4,7 @@ import javax.ejb.*;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -129,25 +130,44 @@ public class ClientBean implements EntityBean {
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
             Integer id = resultSet.getInt(1);
-            preparedStatement = conn.prepareStatement("INSERT INTO public.clients VALUES" +
-                    "(?, ?, ?)");
-            preparedStatement.setInt(1, id);
-            preparedStatement.setString(2, name);
-            preparedStatement.setString(3, info);
-            preparedStatement.executeUpdate();
-            this.name = name;
-            this.info = info;
-            return id;
+            return privateCreate(id, name, info);
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new EJBException("INSERT exception");
+            throw new EJBException("NEXTVAL exception");
         } finally {
             closeAll(resultSet, preparedStatement, conn);
         }
     }
 
-    public void ejbPostCreate(String name, String info) {
+    public Integer ejbCreate(Integer id, String name, String info) {
+        return privateCreate(id, name, info);
+    }
 
+    private Integer privateCreate(Integer id, String name, String info) {
+        try {
+            ejbFindByPrimaryKey(id);
+            return null;
+        } catch (FinderException e) {
+            Connection conn = null;
+            PreparedStatement preparedStatement = null;
+            try {
+                conn = dataSource.getConnection();
+                preparedStatement = conn.prepareStatement("INSERT INTO public.clients VALUES" +
+                        "(?, ?, ?)");
+                preparedStatement.setInt(1, id);
+                preparedStatement.setString(2, name);
+                preparedStatement.setString(3, info);
+                preparedStatement.executeUpdate();
+                this.name = name;
+                this.info = info;
+                return id;
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+                throw new EJBException("INSERT exception");
+            } finally {
+                closeAll(preparedStatement, conn);
+            }
+        }
     }
 
     public Collection ejbFindAll() {
@@ -171,12 +191,24 @@ public class ClientBean implements EntityBean {
         }
     }
 
+    public Integer getPrimaryKey() throws EJBException {
+        return (Integer) entityContext.getPrimaryKey();
+    }
+
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getInfo() {
         return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     private void closeAll(ResultSet resultSet, PreparedStatement preparedStatement, Connection connection) {
@@ -198,5 +230,13 @@ public class ClientBean implements EntityBean {
         try { Objects.requireNonNull(connection).close(); } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void ejbPostCreate(Integer id, String name, String info) throws CreateException {
+
+    }
+
+    public void ejbPostCreate(String name, String info) {
+
     }
 }

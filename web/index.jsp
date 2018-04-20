@@ -20,5 +20,7 @@
 <form class="inputform" action="service/menu.jsp" method=post>
     <button name="performButton" type="submit" class=inputform>View all services</button>
 </form>
+<a href="getxml.xml" class="stpage">Download xml</a>
+<a href="import.jsp" class="stpage">Import xml</a>
 </body>
 </html>

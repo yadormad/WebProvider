@@ -61,24 +61,13 @@ public class ServiceBean implements EntityBean {
         ResultSet resultSet = null;
         try {
             conn = dataSource.getConnection();
-            createServiceStatement = conn.prepareStatement("SELECT nextval('public.service_id_sequence')");
-            resultSet = createServiceStatement.executeQuery();
-            resultSet.next();
-            Integer serviceId = resultSet.getInt(1);
-            createServiceStatement = conn.prepareStatement("INSERT INTO public.services VALUES" +
-                    "(?, ?, ?, ?, ?, ?)");
-            createServiceStatement.setInt(1, serviceId);
-            createServiceStatement.setInt(2, clientId);
-            createServiceStatement.setString(3, name);
-            createServiceStatement.setString(4, type.name());
-            createServiceStatement.setDate(5, startDate);
-            createServiceStatement.setDate(6, endDate);
-            createServiceStatement.executeUpdate();
-            this.clientId = clientId;
-            this.name = name;
-            this.type = type;
-            this.startDate = startDate;
-            this.endDate = endDate;
+            Integer serviceId = null;
+            while (privateCreate(serviceId, clientId, name, type, startDate, endDate) == null) {
+                createServiceStatement = conn.prepareStatement("SELECT nextval('public.service_id_sequence')");
+                resultSet = createServiceStatement.executeQuery();
+                resultSet.next();
+                serviceId = resultSet.getInt(1);
+            }
             return serviceId;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,7 +77,41 @@ public class ServiceBean implements EntityBean {
         }
     }
 
-    public void ejbPostCreate(Integer clientId, String name, ServiceType type, Date startDate, Date endDate) throws CreateException {
+    public Integer ejbCreate(Integer id, Integer clientId, String name, ServiceType type, Date startDate, Date endDate) throws CreateException {
+        return privateCreate(id, clientId, name, type, startDate, endDate);
+    }
+
+    private Integer privateCreate(Integer id, Integer clientId, String name, ServiceType type, Date startDate, Date endDate) {
+        try {
+            ejbFindByPrimaryKey(id);
+            return null;
+        } catch (FinderException e) {
+            Connection conn = null;
+            PreparedStatement createServiceStatement = null;
+            try {
+                conn = dataSource.getConnection();
+                createServiceStatement = conn.prepareStatement("INSERT INTO public.services VALUES" +
+                        "(?, ?, ?, ?, ?, ?)");
+                createServiceStatement.setInt(1, id);
+                createServiceStatement.setInt(2, clientId);
+                createServiceStatement.setString(3, name);
+                createServiceStatement.setString(4, type.name());
+                createServiceStatement.setDate(5, startDate);
+                createServiceStatement.setDate(6, endDate);
+                createServiceStatement.executeUpdate();
+                this.clientId = clientId;
+                this.name = name;
+                this.type = type;
+                this.startDate = startDate;
+                this.endDate = endDate;
+                return id;
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+                throw new EJBException(e1.getMessage());
+            } finally {
+                closeAll(createServiceStatement, conn);
+            }
+        }
     }
 
     public Integer ejbFindByPrimaryKey(Integer key) throws FinderException {
@@ -284,5 +307,13 @@ public class ServiceBean implements EntityBean {
         try { Objects.requireNonNull(connection).close(); } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void ejbPostCreate(Integer id, Integer clientId, String name, ServiceType type, Date startDate, Date endDate) throws CreateException {
+
+    }
+
+    public void ejbPostCreate(Integer clientId, String name, ServiceType type, Date startDate, Date endDate) throws CreateException {
+
     }
 }

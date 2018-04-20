@@ -7,12 +7,29 @@ import model.client.LocalClientHome;
 import model.service.LocalService;
 import model.service.LocalServiceHome;
 import model.service.types.ServiceType;
+import model.xml.AllDbXml;
+import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.*;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.http.Part;
+import javax.xml.XMLConstants;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.*;
 
 @Stateless(name = "UserSessionEJB")
@@ -82,6 +99,16 @@ public class UserSessionBean {
         }
     }
 
+    public String deleteClient (Integer id) throws FinderException, RemoveException {
+        LocalClient deletedClient = clientHome.findByPrimaryKey(id);
+        String deletedClientName = deletedClient.getName();
+        for (LocalService clientsService : getServicesByClientId(id)) {
+            clientsService.remove();
+        }
+        deletedClient.remove();
+        return "Client " + deletedClientName + " successfully deleted";
+    }
+
     public String addService(Integer clientId, String name, ServiceType type, Date startDate, Date endDate) throws CreateException {
         if(startDate.after(endDate)) return "ERROR: Provision date can't be after disablicng date";
         serviceHome.create(clientId, name, type, new java.sql.Date(startDate.getTime()), new java.sql.Date(endDate.getTime()));
@@ -142,6 +169,31 @@ public class UserSessionBean {
             serviceClientMap.put(service, client);
         }
         return serviceClientMap;
+    }
+
+    public void exportIntoXml(OutputStream outputStream) throws JAXBException, IOException {
+        AllDbXml xmlClass = new AllDbXml();
+        xmlClass.loadFromDb(clientHome, serviceHome);
+        JAXBContext jaxbContext = JAXBContext.newInstance(AllDbXml.class);
+        Marshaller marshaller = jaxbContext.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+        marshaller.marshal(xmlClass, outputStream);
+    }
+
+    public void importXml(Part inputXmlFilePart) throws IOException, SAXException, JAXBException {
+        validateXml(new StreamSource(inputXmlFilePart.getInputStream()));
+        JAXBContext jaxbContext = JAXBContext.newInstance(AllDbXml.class);
+        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+        AllDbXml importedDb = (AllDbXml) unmarshaller.unmarshal(inputXmlFilePart.getInputStream());
+        importedDb.storeIntoDb(clientHome, serviceHome);
+    }
+
+    private void validateXml(Source xmlSource) throws IOException, SAXException {
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Schema schema = schemaFactory.newSchema(new File("schema1.xsd"));
+        Validator validator = schema.newValidator();
+        validator.validate(xmlSource);
     }
 
     public UUID blockClient(Integer clientId, UUID blockId) {

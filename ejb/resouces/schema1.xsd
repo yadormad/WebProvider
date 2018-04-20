@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <xsd:element name="provider">
+
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="client" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="info" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+              <xsd:element name="services" minOccurs="0">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="service" type="serviceXml" minOccurs="0" maxOccurs="unbounded"/>
+                  </xsd:sequence>
+                </xsd:complexType>
+                <xsd:unique name="unique-type">
+                  <xsd:selector xpath="service"/>
+                  <xsd:field xpath="type"/>
+                </xsd:unique>
+              </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="id" type="xsd:int"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+    <xsd:unique name="client-id">
+      <xsd:selector xpath="client"/>
+      <xsd:field xpath="@id"/>
+    </xsd:unique>
+    <xsd:unique name="service-id">
+      <xsd:selector xpath="client/services/service"/>
+      <xsd:field xpath="@id"/>
+    </xsd:unique>
+  </xsd:element>
+
+  <xsd:complexType name="serviceXml">
+    <xsd:sequence>
+      <xsd:element name="endDate" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="startDate" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="type" type="serviceType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:int"/>
+  </xsd:complexType>
+
+  <xsd:simpleType name="serviceType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="tv"/>
+      <xsd:enumeration value="internet"/>
+      <xsd:enumeration value="phone"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>
+

@@ -26,7 +26,7 @@
     </c:otherwise>
 </c:choose>
 
-<c:set var="clientName" value="${userBean.getClientOfService(service.primaryKey).name}" scope="request"/>
+<c:set var="client" value="${userBean.getClientOfService(service.primaryKey)}" scope="request"/>
 
 <fmt:formatDate pattern="yyyy-MM-dd" var="formattedProvisionDate" value="${service.startDate}" scope="request"/>
 <fmt:formatDate pattern="yyyy-MM-dd" var="formattedDisablingDate" value="${service.endDate}" scope="request"/>
@@ -38,11 +38,11 @@
 </c:if>
 <html>
 <head>
-    <title>Update <c:out value="${clientName}"/>'s service</title>
+    <title>Update <c:out value="${client.name}"/>'s service</title>
     <link rel="stylesheet" type="text/css" href="../styles/mystyle1.css"/>
 </head>
 <body class="stpage">
-<h1 class="stpage">Update <c:out value="${clientName}"/>'s service</h1>
+<h1 class="stpage">Update <c:out value="${client.name}"/>'s service</h1>
 <form class="inputform" action="update.jsp" method=get>
     <div style="display: inline-block">
         <label for=name class = inputform>Service name</label>

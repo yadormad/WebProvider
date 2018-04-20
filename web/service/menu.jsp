@@ -24,8 +24,8 @@
         <button name=serviceType type=submit class=inputform value="<c:out value="${type.name()}"/>">View <c:out value="${type.name()}"/></button>
     </c:forEach>
 </form>
-<c:if test="${not empty param.errorMessage && param.errorMessage.equals('noclient')}">
-    <p class="error">No client was chosen</p>
+<c:if test="${not empty param.errorMessage && param.errorMessage.equals('notype')}">
+    <p class="error">No type was chosen</p>
 </c:if>
 <a href="../index.jsp" class="stpage">Back</a>
 </body>

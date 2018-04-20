@@ -1,5 +1,12 @@
 package model.service.types;
 
+import javax.xml.bind.annotation.XmlEnumValue;
+
 public enum ServiceType {
-    TV, INTERNET, PHONE;
+    @XmlEnumValue(value = "tv")
+    TV,
+    @XmlEnumValue(value = "internet")
+    INTERNET,
+    @XmlEnumValue(value = "phone")
+    PHONE;
 }
